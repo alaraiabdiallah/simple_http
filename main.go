@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/gorilla/handlers"
 	"github.com/joho/godotenv"
 	"log"
 	"net/http"
@@ -12,7 +13,7 @@ func main() {
 	godotenv.Load()
 
 	static_file_path := "./public"
-	if path := os.Getenv("FILE_PATH"); path != ""{
+	if path := os.Getenv("FILE_PATH"); path != "" {
 		static_file_path = path
 	}
 
@@ -20,12 +21,12 @@ func main() {
 	http.Handle("/", fs)
 
 	port := "3000"
-	if port_env := os.Getenv("PORT"); port_env != ""{
+	if port_env := os.Getenv("PORT"); port_env != "" {
 		port = port_env
 	}
 
-	log.Printf("Listening on :%v...",port)
-	err := http.ListenAndServe(fmt.Sprintf(":%v",port), nil)
+	log.Printf("Listening on :%v...", port)
+	err := http.ListenAndServe(fmt.Sprintf(":%v", port), handlers.LoggingHandler(os.Stdout, http.DefaultServeMux))
 	if err != nil {
 		log.Fatal(err)
 	}
