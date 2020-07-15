@@ -13,14 +13,15 @@ func main() {
 	godotenv.Load()
 
 	var portNum string
-	flag.StringVar(&portNum, "port", "", "number of lines to read from the file")
+	flag.StringVar(&portNum, "port", "", "Application's port")
 
 	var fileLocation string
-	flag.StringVar(&fileLocation, "location", "", "File Location")
+	flag.StringVar(&fileLocation, "location", "", "File's Location")
 	flag.Parse()
 
 	static_file_path := "./public"
 	if path := os.Getenv("FILE_PATH"); path != "" {
+		fmt.Println("environment variable detected, Changing location to ", path)
 		static_file_path = path
 	}
 
@@ -34,7 +35,7 @@ func main() {
 
 	port := "3000"
 	if port_env := os.Getenv("PORT"); port_env != "" {
-		fmt.Println("Loading Configuration from file .env")
+		fmt.Println("environment variable detected, Changing port to ", port_env)
 		port = port_env
 	}
 
