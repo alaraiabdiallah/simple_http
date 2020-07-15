@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/gorilla/handlers"
 	"github.com/joho/godotenv"
 	"log"
 	"net/http"
@@ -35,7 +36,7 @@ func main() {
 
 	port := "3000"
 	if port_env := os.Getenv("PORT"); port_env != "" {
-		fmt.Println("environment variable detected, Changing port to ", port_env)
+	  fmt.Println("environment variable detected, Changing port to ", port_env)
 		port = port_env
 	}
 
@@ -45,7 +46,7 @@ func main() {
 	}
 
 	log.Printf("Listening on :%v...", port)
-	err := http.ListenAndServe(fmt.Sprintf(":%v", port), nil)
+	err := http.ListenAndServe(fmt.Sprintf(":%v", port), handlers.LoggingHandler(os.Stdout, http.DefaultServeMux))
 	if err != nil {
 		log.Fatal(err)
 	}
